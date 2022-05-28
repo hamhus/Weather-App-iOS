@@ -13,6 +13,10 @@ struct WeatherView: View {
     var weatherManager = WeatherManager()
     var weather:ResponseBody
     var body: some View {
+        var minTemp=weather.main.temp_min.roundDouble()
+        var maxTemp=weather.main.temp_max.roundDouble()
+        var humidity = weather.main.humidity.roundDouble()
+        var windSpeed = weather.wind.speed.roundDouble()
         //Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
         ZStack(alignment: .leading){
             VStack
@@ -38,10 +42,13 @@ struct WeatherView: View {
                         
                         //Adding a Celsius/Farhenheit button to change units
                         VStack{
-                            Button(self.changeUnit)
+                            Button(action:{
+                                title.text="C"
+                            })
                             {
-                                changeUnit;
-                            }label:{
+                                Text = "Unit changed"
+                            }
+                            .label:{
                                 Text("C").font(.system(size:30)).fontWeight(.bold)
                             }
                             if(self.changeUnit)
@@ -92,15 +99,15 @@ struct WeatherView: View {
                 VStack(alignment: .leading, spacing: 20){
                     Text("Weather now").bold().padding(.bottom)
                     HStack{
-                        WeatherRow(logo: "thermometer", name: "Min temp", value: weather.main.temp_min.roundDouble()+"°")
+                        WeatherRow(logo: "thermometer", name: "Min temp", value: minTemp + "°")
                         Spacer()
-                        WeatherRow(logo: "thermometer", name: "Max temp", value: weather.main.temp_max.roundDouble()+"°")
+                        WeatherRow(logo: "thermometer", name: "Max temp", value: maxTemp + "°")
                         
                     }
                     HStack{
-                        WeatherRow(logo: "wind", name: "Wind speed", value: weather.wind.speed.roundDouble()+"m/s")
+                        WeatherRow(logo: "wind", name: "Wind speed", value: windSpeed + "m/s")
                         Spacer()
-                        WeatherRow(logo: "humidity", name: "Humidity", value: weather.main.humidity.roundDouble()+"°")
+                        WeatherRow(logo: "humidity", name: "Humidity", value: humidity + "°")
                         
                     }
                 }
