@@ -1,0 +1,53 @@
+{
+    "coord": {
+        "lon": -74.006,
+        "lat": 40.7143
+    },
+    "weather": [
+        {
+            "id": 211,
+            "main": "Thunderstorm",
+            "description": "thunderstorm",
+            "icon": "11d"
+        },
+        {
+            "id": 500,
+            "main": "Rain",
+            "description": "light rain",
+            "icon": "10d"
+        }
+    ],
+    "base": "stations",
+    "main": {
+        "temp": 23.59,
+        "feels_like": 23.91,
+        "temp_min": 19.33,
+        "temp_max": 26.27,
+        "pressure": 1006,
+        "humidity": 73
+    },
+    "visibility": 10000,
+    "wind": {
+        "speed": 8.23,
+        "deg": 290,
+        "gust": 15.43
+    },
+    "rain": {
+        "1h": 0.46
+    },
+    "clouds": {
+        "all": 75
+    },
+    "dt": 1653756798,
+    "sys": {
+        "type": 2,
+        "id": 2039034,
+        "country": "US",
+        "sunrise": 1653730155,
+        "sunset": 1653783462
+    },
+    "timezone": -14400,
+    "id": 5128581,
+    "name": "New York",
+    "cod": 200
+}
