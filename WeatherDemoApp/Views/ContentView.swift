@@ -12,6 +12,7 @@ struct ContentView: View {
     @StateObject var locationManager = LocationManager()
     var weatherManager = WeatherManager()
     @State var weather:ResponseBody?
+    @State var weatherImperial:ResponseBody?
     
     
     var body: some View {
@@ -31,6 +32,15 @@ struct ContentView: View {
                             do{
                                 weather = try await
                                 weatherManager.getCurrentWeather(latitude: location.latitude, longitude: location.longitude, unit:"metric")
+                            }
+                            catch{
+                                print("Error getting weather \(error)")
+                            }
+                        }
+                        .task{
+                            do{
+                                weatherImperial = try await
+                                weatherManager.getCurrentWeather(latitude: location.latitude, longitude: location.longitude, unit:"imperial")
                             }
                             catch{
                                 print("Error getting weather \(error)")

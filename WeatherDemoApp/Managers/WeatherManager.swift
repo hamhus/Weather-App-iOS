@@ -7,9 +7,11 @@
 
 import Foundation
 import CoreLocation
+import SwiftUI
 
 class WeatherManager
 {
+    @StateObject var locationManager = LocationManager()
     func getCurrentWeather(latitude:CLLocationDegrees, longitude:CLLocationDegrees, unit:String) async throws -> ResponseBody
     {
         guard let url = URL(string:"https://api.openweathermap.org/data/2.5/weather?lat=\(latitude)&lon=\(longitude)&appid=\("c0d6b7fb19db3109bb97da925d9ea1d8")&units=\(unit)")
@@ -25,6 +27,15 @@ class WeatherManager
         
         return decodeData
     }
+    
+    //func getCurrentWeatherHelper(unitType:String) async throws -> ResponseBody
+    //{
+        //let location = locationManager.location
+        //let decodeData = getCurrentWeather(latitude:location.latitude,longitude:location.longitude, unit:unitType)
+        
+        //return decodeData
+        //@State _ location = LocationManager()
+    //}
 }
 
 struct ResponseBody:Decodable

@@ -9,14 +9,18 @@ import SwiftUI
 
 struct WeatherView: View {
     @StateObject var locationManager = LocationManager()
-    @State private var changeUnit = ""
+    @State private var changeUnitType="change"
+    @State var changeUnit = "imperial"
+    @State var unitType = "M"
+    //@IBOutlet var buttonText
     var weatherManager = WeatherManager()
     var weather:ResponseBody
+    var weatherImperial:ResponseBody
     var body: some View {
-        var minTemp=weather.main.temp_min.roundDouble()
-        var maxTemp=weather.main.temp_max.roundDouble()
-        var humidity = weather.main.humidity.roundDouble()
-        var windSpeed = weather.wind.speed.roundDouble()
+//        var minTemp=weather.main.temp_min.roundDouble()
+//        var maxTemp=weather.main.temp_max.roundDouble()
+//        var humidity = weather.main.humidity.roundDouble()
+//        var windSpeed = weather.wind.speed.roundDouble()
         //Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
         ZStack(alignment: .leading){
             VStack
@@ -40,40 +44,88 @@ struct WeatherView: View {
                         
                         Text(weather.main.feels_like.roundDouble() + "°").font(.system(size:70)).fontWeight(.bold).padding()
                         
+                        
+                        //VStack{
+                            Button(action: {
+                                
+                                
+                            },
+                            label: {
+                                Text("C")
+                            })
+                        //}
+                        Text("|")
                         //Adding a Celsius/Farhenheit button to change units
                         VStack{
-                            Button(action:{
-                                title.text="C"
-                            })
+                            //TextField("Text here", Text=$changeUnit)
+                            
+                        Button (action: {
+                                if(unitType=="M")
+                                {
+                                    unitType="F"
+                                    changeUnit = "imperial"
+                                    //Label("Add")
+                                }
+                            else
                             {
-                                Text = "Unit changed"
+                                unitType = "M"
+                                changeUnit = "metric"
                             }
-                            .label:{
-                                Text("C").font(.system(size:30)).fontWeight(.bold)
-                            }
-                            if(self.changeUnit)
-                            {
-                                Text("Unit Changed")
-                                var weather:ResponseBody? = weather
-                                if let location = locationManager.location{
-                                    if let weather = weather
-                                    {
-                                        //Text("Weather data fetched")
-                                        WeatherView(weather: weather)
+                            
+                            var weather:ResponseBody? = weather
+                            
+                            LoadingView()
+                                .task{
+                                    do{
+                                        unitType = "F"
+//                                        weather = try await
+//                                        weatherManager.getCurrentWeather(latitude: locationManager.location.latitude, longitude: location.longitude, unit:changeUnit)
                                     }
-                                    else{
-                                LoadingView()
-                                    .task{
-                                        do{
-                                            weather = try await
-                                            weatherManager.getCurrentWeather(latitude: location.latitude, longitude: location.longitude, unit:"imperial")
-                                        }
-                                        catch{
-                                            print("Error getting weather \(error)")
-                                        }
-                                    }
+                                    catch{
+                                        print("Error getting weather \(error)")
                                     }
                                 }
+                                //unitType = "F"
+                        }, label:{
+                            if(unitType=="M"){
+                                Text("F")
+                            }
+                            else
+                            {
+                                Text("C")
+                            }
+                        })
+                            
+//                            if(unitType == "F")
+//                            {
+                                //Text("Unit Changed")
+//                                var weather:ResponseBody? = weather
+//                                if let location = locationManager.location{
+//                                    if let weather = weather
+//                                    {
+////                                        minTemp=weather.main.temp_min.roundDouble()
+////                                         maxTemp=weather.main.temp_max.roundDouble()
+////                                         humidity = weather.main.humidity.roundDouble()
+////                                         windSpeed = weather.wind.speed.roundDouble()
+//                                        //Text("Weather data fetched")
+//                                        //WeatherView(weather: weather)
+//                                        //unitType:String = "F"
+//
+//                                    }
+//                                    else{
+//                                LoadingView()
+//                                    .task{
+//                                        do{
+//                                            unitType = "F"
+//                                            weather = try await
+//                                            weatherManager.getCurrentWeather(latitude: location.latitude, longitude: location.longitude, unit:"imperial")
+//                                        }
+//                                        catch{
+//                                            print("Error getting weather \(error)")
+//                                        }
+//                                    }
+//
+//                                }
                             }
                         }
                     }
@@ -99,15 +151,15 @@ struct WeatherView: View {
                 VStack(alignment: .leading, spacing: 20){
                     Text("Weather now").bold().padding(.bottom)
                     HStack{
-                        WeatherRow(logo: "thermometer", name: "Min temp", value: minTemp + "°")
+                        WeatherRow(logo: "thermometer", name: "Min temp", value: weather.main.temp_min.roundDouble() + "°")
                         Spacer()
-                        WeatherRow(logo: "thermometer", name: "Max temp", value: maxTemp + "°")
+                        WeatherRow(logo: "thermometer", name: "Max temp", value: weather.main.temp_max.roundDouble() + "°")
                         
                     }
                     HStack{
-                        WeatherRow(logo: "wind", name: "Wind speed", value: windSpeed + "m/s")
+                        WeatherRow(logo: "wind", name: "Wind speed", value: weather.wind.speed.roundDouble() + "m/s")
                         Spacer()
-                        WeatherRow(logo: "humidity", name: "Humidity", value: humidity + "°")
+                        WeatherRow(logo: "humidity", name: "Humidity", value: weather.main.humidity.roundDouble() + "°")
                         
                     }
                 }
@@ -119,7 +171,7 @@ struct WeatherView: View {
                 .background(.white)
                 .cornerRadius(20, corners: [.topLeft, .topRight])
             }
-        }
+        
         .edgesIgnoringSafeArea(.bottom)
         .background(Color(hue:0.656, saturation: 0.787,
                           brightness: 0.354))
