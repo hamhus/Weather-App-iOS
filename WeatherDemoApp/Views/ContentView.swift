@@ -20,11 +20,18 @@ struct ContentView: View {
         VStack{
             if let location = locationManager.location{
 //Text("Your coordinates are :\(location.longitude),\(location.latitude)")
-                if let weather = weather
+                
+                if let weatherImp=weatherImperial, let weather = weather
                 {
                     //Text("Weather data fetched")
-                    WeatherView(weather: weather)
+                    WeatherView(weather: weather, weatherImperial: weatherImp)
                 }
+                //let weatherMet = weather
+                //let weatherImp = weatherImperial
+//                if(let weatherImp = weatherImperial)
+//                {
+//                    WeatherView(weather: weather, weatherImp: weatherImperial)
+//                }
                 else
                 {
                     LoadingView()
