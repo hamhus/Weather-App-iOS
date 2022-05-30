@@ -13,7 +13,7 @@ struct ContentView: View {
     var weatherManager = WeatherManager()
     @State var weather:ResponseBody?
     @State var weatherImperial:ResponseBody?
-    
+    //@State var minTempVar:String?
     
     var body: some View {
         
@@ -23,8 +23,11 @@ struct ContentView: View {
                 
                 if let weatherImp=weatherImperial, let weather = weather
                 {
+                    //var minTemp = weather.main.feels_like.roundDouble()
+                    //var temp = TempModel(weather: weather)
                     //Text("Weather data fetched")
                     WeatherView(weather: weather, weatherImperial: weatherImp)
+                    
                 }
                 //let weatherMet = weather
                 //let weatherImp = weatherImperial

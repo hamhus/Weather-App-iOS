@@ -14,13 +14,29 @@ struct WeatherView: View {
     //@State var unitType = "M"
     //@IBOutlet var buttonText
     var weatherManager = WeatherManager()
+    
     @State var weather:ResponseBody
     @State var weatherImperial:ResponseBody
-    @State var minTemp = ""
-    @State var maxTemp = ""
-    @State var windSpeed = ""
-    @State var humidity = ""
-    @State var tempNow = ""
+    @State var minTemp:String
+    @State var maxTemp:String
+    @State var windSpeed:String
+    @State var humidity:String
+    @State var tempNow:String
+    //@State var tempModel = TempModel(weather: ResponseBody)
+    
+    init(weather:ResponseBody, weatherImperial:ResponseBody) {
+        self.weather = weather
+        self.weatherImperial = weatherImperial
+        
+        //tempModel = TempModel(weather:ResponseBody)
+        //minTemp = tempModel.minTemp
+        //minTemp = tempMin.roundDouble()
+        tempNow = weather.main.feels_like.roundDouble()
+        minTemp = weather.main.temp_min.roundDouble()
+        maxTemp = weather.main.temp_max.roundDouble()
+        humidity = weather.main.humidity.roundDouble()
+        windSpeed = weather.wind.speed.roundDouble()
+       }
     
     var body: some View {
         //var minTemp = ""
@@ -28,7 +44,7 @@ struct WeatherView: View {
         //var humidity = weather.main.humidity.roundDouble()
         //var windSpeed = weather.wind.speed.roundDouble()
         //Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-        //tempNow = displayTemp(temp:weather)
+        //displayTemp(temp:weather)
         
         ZStack(alignment: .leading){
             VStack
@@ -49,13 +65,13 @@ struct WeatherView: View {
                             Text(weather.weather[0].main)
                         }.frame(width:100, alignment: .leading)
                         
-                        Text(displayTemp(temp:weather) + "°").font(.system(size:70)).fontWeight(.bold).padding()
+                        Text(tempNow + "°").font(.system(size:70)).fontWeight(.bold).padding()
                         
                         
                         //VStack{
                             Button(action: {
                                 //weather = weather
-                                displayTemp(temp:weather)
+                                tempNow = weather.main.feels_like.roundDouble()
                                 
                                 minTemp = weather.main.temp_min.roundDouble()
                                 maxTemp = weather.main.temp_max.roundDouble()
@@ -75,7 +91,7 @@ struct WeatherView: View {
                             
                         Button (action: {
                                 //weather = weatherImperial
-                            displayTemp(temp:weatherImperial)
+                            tempNow = weatherImperial.main.feels_like.roundDouble()
                             minTemp = weatherImperial.main.temp_min.roundDouble()
                             maxTemp = weatherImperial.main.temp_max.roundDouble()
                             windSpeed = weatherImperial.wind.speed.roundDouble()
@@ -139,11 +155,11 @@ struct WeatherView: View {
         .preferredColorScheme(.dark)
     }
     
-    func displayTemp(temp:ResponseBody) -> String
-    {
-        let tempNow = temp.main.feels_like.roundDouble()
-        return tempNow
-    }
+//    func displayTemp(temp:ResponseBody)
+//    {
+//        let tempNow = temp.main.feels_like.roundDouble()
+//        //return tempNow
+//    }
 }
 
 struct WeatherView_Previews: PreviewProvider {
