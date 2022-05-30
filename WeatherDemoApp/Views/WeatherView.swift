@@ -22,6 +22,7 @@ struct WeatherView: View {
     @State var windSpeed:String
     @State var humidity:String
     @State var tempNow:String
+    @State var unitSelected:String
     //@State var tempModel = TempModel(weather: ResponseBody)
     
     init(weather:ResponseBody, weatherImperial:ResponseBody) {
@@ -36,6 +37,7 @@ struct WeatherView: View {
         maxTemp = weather.main.temp_max.roundDouble()
         humidity = weather.main.humidity.roundDouble()
         windSpeed = weather.wind.speed.roundDouble()
+        unitSelected = "C"
        }
     
     var body: some View {
@@ -77,11 +79,13 @@ struct WeatherView: View {
                                 maxTemp = weather.main.temp_max.roundDouble()
                                 windSpeed = weather.wind.speed.roundDouble()
                                 humidity = weather.main.humidity.roundDouble()
-                                //print(minTemp)
+                                
+                                //Unit Selected
+                                unitSelected = "C"
                             },
                             label: {
-                                Text("C")
-                            })
+                                Text("C").bold()
+                            }).disabled(unitSelected=="C")
                         
                             Text("|")
                         //}
@@ -96,11 +100,13 @@ struct WeatherView: View {
                             maxTemp = weatherImperial.main.temp_max.roundDouble()
                             windSpeed = weatherImperial.wind.speed.roundDouble()
                             humidity = weatherImperial.main.humidity.roundDouble()
+                            //Unit Selected
+                            unitSelected = "F"
                             
                         }, label:{
-                                Text("F")
+                                Text("F").bold()
                             
-                        })
+                        }).disabled(unitSelected=="F")
                     }
                         }
                     }
